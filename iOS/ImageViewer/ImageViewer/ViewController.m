@@ -12,14 +12,30 @@
 
 @end
 
-@implementation ViewController
+@implementation ViewController {
+    NSMutableArray *imageArray;
+    NSMutableDictionary *imageDict;
+    NSString *jsonUrl;
+    CGRect rect;
+}
+
+- (id)init
+{
+    if (self = [super init]) {
+        imageArray = [[NSMutableArray alloc] initWithCapacity:30];
+        imageDict = [[NSMutableDictionary alloc] initWithCapacity:30];
+        jsonUrl = @"http://image.baidu.com/channel/listjson?pn=0&rn=30&tag1=%E5%AE%A0%E7%89%A9&tag2=%E5%85%A8%E9%83%A8&ie=utf8";
+    }
+    
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     UIEdgeInsets insets = UIApplication.sharedApplication.delegate.window.safeAreaInsets;
     CGRect bounds = self.view.bounds;
-    CGRect rect = CGRectMake(bounds.origin.x + insets.left, bounds.origin.y + insets.top, bounds.size.width - insets.left - insets.right, bounds.size.height - insets.top - insets.bottom);
+    rect = CGRectMake(bounds.origin.x + insets.left, bounds.origin.y + insets.top, bounds.size.width - insets.left - insets.right, bounds.size.height - insets.top - insets.bottom);
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:rect];
     UIImage *image = [UIImage imageNamed:@"test"];
@@ -33,19 +49,35 @@
     [switchButton addTarget:self action:@selector(switchButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [switchButton setBackgroundColor:UIColor.grayColor];
     [self.view addSubview:switchButton];
+    
+    NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithURL:[[NSURL alloc] initWithString:jsonUrl] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (data) {
+            NSDictionary *object = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+            if (object) {
+                NSArray *imageItems = [object valueForKey:@"data"];
+                if (imageItems) {
+                    for (NSDictionary *item in imageItems) {
+                        if (item.count > 0) {
+                            [self->imageArray addObject:[item valueForKey:@"image_url"]];
+                        }
+                    }
+                }
+            }
+        }
+    }];
+    [task resume];
 }
 
 - (void)switchButtonClick:(UIButton *)sender
 {
     [sender setHidden:YES];
     
-    UIEdgeInsets insets = UIApplication.sharedApplication.delegate.window.safeAreaInsets;
-    CGRect bounds = self.view.bounds;
-    CGRect rect = CGRectMake(bounds.origin.x + insets.left, bounds.origin.y + insets.top, bounds.size.width - insets.left - insets.right, bounds.size.height - insets.top - insets.bottom);
+    
     UITableView *tableView = [[UITableView alloc] initWithFrame:rect style:UITableViewStylePlain];
     [tableView setDataSource:self];
     [tableView setDelegate:self];
     [self.view addSubview:tableView];
+    tableView.rowHeight = rect.size.height / 2;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -59,17 +91,50 @@
     static NSString *cellID = @"cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:cellID];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
     
-    [cell.textLabel setText:@"title"];
-    [cell.detailTextLabel setText:@"detailed text"];
+    NSInteger pos = [indexPath indexAtPosition:1];
+    NSString *imgUrl = [imageArray objectAtIndex:pos];
+    
+    if ([imageDict valueForKey:imgUrl] == nil) {
+        [imageDict setObject:imgUrl forKey:[NSNull null]];
+        
+        NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithURL:[[NSURL alloc] initWithString:imgUrl] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            if (data) {
+                UIImage *img = [UIImage imageWithData:data];
+                [self->imageDict setObject:img forKey:imgUrl];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    UITableViewCell *updateCell = (id)[tableView cellForRowAtIndexPath:indexPath];
+                    
+                    if (updateCell) {
+                        updateCell.imageView.image = img;
+                        [updateCell setNeedsLayout];
+                    }
+                    
+                });
+            }
+        }];
+        [task resume];
+    }
+    else {
+        UIImage *img = [imageDict valueForKey:imgUrl];
+        if ([img isKindOfClass:[UIImage class]]) {
+            cell.imageView.image = img;
+            [cell layoutIfNeeded];
+        }
+    }
+    
+    [cell.imageView setClipsToBounds:YES];
+    [cell.imageView.layer setMasksToBounds:YES];
+    [cell.imageView setContentMode:UIViewContentModeScaleAspectFill];
     
     return cell;
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 10;
+    return 30;
 }
 
 - (void)encodeWithCoder:(nonnull NSCoder *)aCoder {
