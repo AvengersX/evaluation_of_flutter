@@ -68,7 +68,6 @@ class ContentsManager {
         }
         result.removeWhere((value) => (value == null || value == ''));
       }
-      print(result);
     } catch (e, s) {}
     return result;
   }

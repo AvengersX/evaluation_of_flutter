@@ -21,7 +21,6 @@ class ImageListWidgetState extends State<ImageListWidget> {
     if (ContentsManager().hasContent()) {
       return PullToRefreshWidget(
         child: ListView.builder(
-
             scrollDirection: Axis.vertical,
             itemCount: ContentsManager().size(),
             itemBuilder: (BuildContext context, int index) => Item(index)),
@@ -33,7 +32,11 @@ class ImageListWidgetState extends State<ImageListWidget> {
         },
       );
     } else {
-      return Center(child: Text('No Content'),);
+      return Container(
+        color: Color(0XFFFFFFFF),
+          child: Center(
+        child: Text('Loading...'),
+      ));
     }
   }
 
