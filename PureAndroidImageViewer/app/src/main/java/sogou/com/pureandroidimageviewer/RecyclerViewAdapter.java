@@ -34,8 +34,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SimpleViewHolder holder, int position) {
+        int drawableResourceId = mContext.getResources().getIdentifier(mUriList.get(position), "drawable", mContext.getPackageName());
+
         Glide.with(mContext)
-                .load(mUriList.get(position))
+                .load(drawableResourceId)
                 .into(holder.mImageView);
     }
 
