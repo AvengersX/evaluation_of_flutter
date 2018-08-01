@@ -49,32 +49,38 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mThreadPoolExecutor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(1024), new ThreadFactory() {
-            @Override
-            public Thread newThread(@NonNull Runnable r) {
-                return new Thread(r);
-            }
-        }, new ThreadPoolExecutor.AbortPolicy());
+        List<String> imgList = new ArrayList<>();
+        for (int i = 1; i <= 31; i++) {
+            imgList.add("img_" + i);
+        }
+        mRecyclerViewAdapter.addData(imgList);
 
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == SCROLL_STATE_IDLE) {
-                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                    if (linearLayoutManager.findLastVisibleItemPosition() == recyclerView.getAdapter().getItemCount() - 1) {
-                        fetchData();
-                    }
-                }
-            }
+//        mThreadPoolExecutor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(1024), new ThreadFactory() {
+//            @Override
+//            public Thread newThread(@NonNull Runnable r) {
+//                return new Thread(r);
+//            }
+//        }, new ThreadPoolExecutor.AbortPolicy());
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
+//        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                if (newState == SCROLL_STATE_IDLE) {
+//                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+//                    if (linearLayoutManager.findLastVisibleItemPosition() == recyclerView.getAdapter().getItemCount() - 1) {
+//                        fetchData();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//            }
+//        });
 
-        fetchData();
+//        fetchData();
     }
 
     public void fetchData() {
