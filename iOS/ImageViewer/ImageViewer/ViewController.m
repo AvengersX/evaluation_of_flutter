@@ -23,8 +23,8 @@
 - (id)init
 {
     if (self = [super init]) {
-        imageArray = [[NSMutableArray alloc] initWithCapacity:30];
-        imageDict = [[NSMutableDictionary alloc] initWithCapacity:30];
+        imageArray = [[NSMutableArray alloc] initWithCapacity:60];
+        imageDict = [[NSMutableDictionary alloc] initWithCapacity:60];
         jsonUrl = @"http://image.baidu.com/channel/listjson?pn=0&rn=30&tag1=%E5%AE%A0%E7%89%A9&tag2=%E5%85%A8%E9%83%A8&ie=utf8";
     }
     
@@ -43,13 +43,16 @@
     [imageView setImage:image];
     [self.view addSubview:imageView];
     
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(selectorLeftAction:)];
+    self.navigationItem.leftBarButtonItem = leftButton;
+    
     // button
     CGRect buttonRect = CGRectMake(rect.size.width / 4, rect.size.height / 4 * 3, rect.size.width / 2, 30);
-    UIButton *switchButton = [[UIButton alloc] initWithFrame:buttonRect];
-    [switchButton setTitle:@"Switch to image list" forState:UIControlStateNormal];
-    [switchButton addTarget:self action:@selector(switchButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [switchButton setBackgroundColor:UIColor.grayColor];
-    [self.view addSubview:switchButton];
+    _switchButton = [[UIButton alloc] initWithFrame:buttonRect];
+    [_switchButton setTitle:@"Switch to image list" forState:UIControlStateNormal];
+    [_switchButton addTarget:self action:@selector(switchButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_switchButton setBackgroundColor:UIColor.grayColor];
+    [self.view addSubview:_switchButton];
     
     NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithURL:[[NSURL alloc] initWithString:jsonUrl] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (data) {
@@ -69,16 +72,32 @@
     [task resume];
 }
 
+-(void)selectorLeftAction:(id)sender
+{
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"点击了左侧" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//    [alert show];
+    
+    [_switchButton setHidden:FALSE];
+    if(_tableView != nil)
+        [_tableView setHidden:YES ];
+    
+}
+
 - (void)switchButtonClick:(UIButton *)sender
 {
     [sender setHidden:YES];
     
     
-    UITableView *tableView = [[UITableView alloc] initWithFrame:rect style:UITableViewStylePlain];
-    [tableView setDataSource:self];
-    [tableView setDelegate:self];
-    [self.view addSubview:tableView];
-    tableView.rowHeight = rect.size.height / 2;
+    if(_tableView == nil)
+    {
+    _tableView = [[UITableView alloc] initWithFrame:rect style:UITableViewStylePlain];
+    [_tableView setDataSource:self];
+    [_tableView setDelegate:self];
+    [self.view addSubview:_tableView];
+    _tableView.rowHeight = rect.size.height / 2;
+    }
+    else
+        [_tableView setHidden:FALSE ];
 }
 
 - (void)didReceiveMemoryWarning {
