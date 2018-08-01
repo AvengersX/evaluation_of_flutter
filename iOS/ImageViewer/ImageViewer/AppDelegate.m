@@ -24,9 +24,9 @@
     
     self.window.rootViewController = [ViewController new];
     
-    self.navController = [[UINavigationController alloc] init];
-    [self.navController pushViewController:self.window.rootViewController animated:YES];
-    [self.window addSubview:self.navController.view];
+//    self.navController = [[UINavigationController alloc] init];
+//    [self.navController pushViewController:self.window.rootViewController animated:YES];
+//    [self.window addSubview:self.navController.view];
     
     [self.window makeKeyAndVisible];
     
