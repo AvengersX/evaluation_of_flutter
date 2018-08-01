@@ -95,17 +95,16 @@
         cell = [[IVTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
     
-    
     NSInteger pos = [indexPath indexAtPosition:1];
     NSString *imgUrl = [imageArray objectAtIndex:pos];
     
     if ([imageDict valueForKey:imgUrl] == nil) {
-        [imageDict setObject:imgUrl forKey:[NSNull null]];
+        //[imageDict setObject:imgUrl forKey:[NSNull null]];
         
         NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithURL:[[NSURL alloc] initWithString:imgUrl] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             if (data) {
                 UIImage *img = [UIImage imageWithData:data];
-                [self->imageDict setObject:img forKey:imgUrl];
+                //[self->imageDict setObject:img forKey:imgUrl];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
                 [cell.ivImageView setFrame:cell.bounds];
