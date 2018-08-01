@@ -14,7 +14,7 @@
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         _ivImageView = [[UIImageView alloc] initWithFrame:self.frame];
-        [_ivImageView setContentMode:UIViewContentModeScaleAspectFill];
+        [_ivImageView setContentMode:UIViewContentModeScaleToFill];
         [_ivImageView setClipsToBounds:YES];
         [self.contentView addSubview:_ivImageView];
     }
