@@ -10,34 +10,36 @@ class ImageListWidget extends StatefulWidget {
 }
 
 class ImageListWidgetState extends State<ImageListWidget> {
+  double _imageWidth;
+  double _imageHeight;
+
   @override
   void initState() {
     super.initState();
-    _onRefresh(false);
+
   }
 
   @override
   Widget build(BuildContext context) {
-    if (ContentsManager().hasContent()) {
-      return PullToRefreshWidget(
-        child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            itemCount: ContentsManager().size(),
-            itemBuilder: (BuildContext context, int index) => Item(index)),
-        onRefresh: () {
-          return _onRefresh(false);
-        },
-        onLoadMore: () {
-          return _onRefresh(true);
-        },
-      );
-    } else {
-      return Container(
-        color: Color(0XFFFFFFFF),
-          child: Center(
-        child: Text('Loading...'),
+
+    Size size = MediaQuery.of(context).size;
+    _imageWidth = size.width;
+    _imageHeight = size.height / 2;
+    print(_imageWidth);
+    print(_imageHeight);
+    List<Widget> widgets = [];
+    for (int i = 1; i < 32; i++) {
+      widgets.add(Image.asset(
+        'images/p$i.jpg',
+        fit: BoxFit.fill,
+        width: _imageWidth,
+        height: _imageHeight,
       ));
     }
+
+    return ListView(
+      children: widgets,
+    );
   }
 
   Future<Null> _onRefresh(bool up) {

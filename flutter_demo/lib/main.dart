@@ -17,14 +17,14 @@ class FlutterDemo extends StatelessWidget {
           switch (settings.name) {
             case page_home:
               return NonAnimationRoute(
-                builder: (_) => MainPage(),
-                settings: settings,
-              );
-            case page_image_list:
-              return NonAnimationRoute(
                 builder: (_) => ImageListWidget(),
                 settings: settings,
               );
+//            case page_image_list:
+//              return NonAnimationRoute(
+//                builder: (_) => ImageListWidget(),
+//                settings: settings,
+//              );
           }
           assert(false);
         });
