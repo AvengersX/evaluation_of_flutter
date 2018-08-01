@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C052D88211156F800685F8E /* IVTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C052D87211156F800685F8E /* IVTableViewCell.m */; };
 		1CFA708D21104CBC00333849 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CFA708C21104CBC00333849 /* AppDelegate.m */; };
 		1CFA709021104CBC00333849 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CFA708F21104CBC00333849 /* ViewController.m */; };
 		1CFA709521104CBE00333849 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1CFA709421104CBE00333849 /* Assets.xcassets */; };
@@ -14,6 +15,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1C052D86211156F800685F8E /* IVTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IVTableViewCell.h; sourceTree = "<group>"; };
+		1C052D87211156F800685F8E /* IVTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IVTableViewCell.m; sourceTree = "<group>"; };
 		1CFA708821104CBC00333849 /* ImageViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CFA708B21104CBC00333849 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1CFA708C21104CBC00333849 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -61,6 +64,8 @@
 				1CFA709421104CBE00333849 /* Assets.xcassets */,
 				1CFA709921104CBE00333849 /* Info.plist */,
 				1CFA709A21104CBE00333849 /* main.m */,
+				1C052D86211156F800685F8E /* IVTableViewCell.h */,
+				1C052D87211156F800685F8E /* IVTableViewCell.m */,
 			);
 			path = ImageViewer;
 			sourceTree = "<group>";
@@ -136,6 +141,7 @@
 			files = (
 				1CFA709021104CBC00333849 /* ViewController.m in Sources */,
 				1CFA709B21104CBE00333849 /* main.m in Sources */,
+				1C052D88211156F800685F8E /* IVTableViewCell.m in Sources */,
 				1CFA708D21104CBC00333849 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

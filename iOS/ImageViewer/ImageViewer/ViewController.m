@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "IVTableViewCell.h"
 
 @interface ViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -89,10 +90,11 @@
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
     static NSString *cellID = @"cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    IVTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+        cell = [[IVTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
+    
     
     NSInteger pos = [indexPath indexAtPosition:1];
     NSString *imgUrl = [imageArray objectAtIndex:pos];
@@ -106,13 +108,9 @@
                 [self->imageDict setObject:img forKey:imgUrl];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
-                    UITableViewCell *updateCell = (id)[tableView cellForRowAtIndexPath:indexPath];
-                    
-                    if (updateCell) {
-                        updateCell.imageView.image = img;
-                        [updateCell setNeedsLayout];
-                    }
-                    
+                [cell.ivImageView setFrame:cell.bounds];
+                cell.ivImageView.image = img;
+                [cell setNeedsLayout];
                 });
             }
         }];
@@ -121,14 +119,11 @@
     else {
         UIImage *img = [imageDict valueForKey:imgUrl];
         if ([img isKindOfClass:[UIImage class]]) {
-            cell.imageView.image = img;
+            cell.ivImageView.image = img;
             [cell layoutIfNeeded];
         }
     }
     
-    [cell.imageView setClipsToBounds:YES];
-    [cell.imageView.layer setMasksToBounds:YES];
-    [cell.imageView setContentMode:UIViewContentModeScaleAspectFill];
     
     return cell;
 }
@@ -179,6 +174,11 @@
 
 - (void)updateFocusIfNeeded {
     
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return rect.size.height / 2;
 }
 
 @end
