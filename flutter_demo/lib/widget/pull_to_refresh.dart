@@ -36,12 +36,12 @@ class _PullToRefreshState extends State<PullToRefreshWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final Widget child = NotificationListener<ScrollNotification>(
-      onNotification: _handleScrollNotification,
-      child: widget.child,
-    );
+//    final Widget child = NotificationListener<ScrollNotification>(
+//      onNotification: _handleScrollNotification,
+//      child: widget.child,
+//    );
 
-    return child;
+    return widget.child;
   }
 
   void handleResult(Future result) {
