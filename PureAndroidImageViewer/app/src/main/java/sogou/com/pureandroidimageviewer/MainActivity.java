@@ -90,15 +90,20 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
                     System.out.println("before performFetchDataSync");
-                    List<String> urlList = performFetchDataSync(mOkHttpClient, mCurNum);
-                    mRecyclerViewAdapter.addData(urlList);
+                    final List<String> urlList = performFetchDataSync(mOkHttpClient, mCurNum);
+                    mRecyclerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mRecyclerViewAdapter.addData(urlList);
+                        }
+                    });
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
                     e.printStackTrace();
+                } finally {
+                    mIsFetching = false;
                 }
-
-                mIsFetching = false;
             }
         });
     }
