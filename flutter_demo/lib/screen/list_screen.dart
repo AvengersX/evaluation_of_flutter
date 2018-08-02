@@ -16,25 +16,25 @@ class ImageListWidgetState extends State<ImageListWidget> {
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
   Widget build(BuildContext context) {
-
     Size size = MediaQuery.of(context).size;
     _imageWidth = size.width;
     _imageHeight = size.height / 2;
     print(_imageWidth);
     print(_imageHeight);
     List<Widget> widgets = [];
-    for (int i = 1; i < 32; i++) {
-      widgets.add(Image.asset(
-        'images/p$i.jpg',
-        fit: BoxFit.fill,
-        width: _imageWidth,
-        height: _imageHeight,
-      ));
+    for (int i = 1; i < 63; i++) {
+      i % 2 == 0
+          ? widgets.add(Text('HelloWorld $i'))
+          : widgets.add(Image.asset(
+              'images/p$i.jpg',
+              fit: BoxFit.fill,
+              width: _imageWidth,
+              height: _imageHeight,
+            ));
     }
 
     return ListView(
