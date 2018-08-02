@@ -3,6 +3,7 @@ package sogou.com.pureandroidimageviewer;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -29,6 +30,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public SimpleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem, parent, false);
+        if (parent.getMeasuredHeight() != 0
+                && view.getLayoutParams() instanceof RecyclerView.LayoutParams) {
+            RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) view.getLayoutParams();
+            layoutParams.height = parent.getMeasuredHeight() / 2;
+            view.setLayoutParams(layoutParams);
+        }
         return new SimpleViewHolder(view);
     }
 
