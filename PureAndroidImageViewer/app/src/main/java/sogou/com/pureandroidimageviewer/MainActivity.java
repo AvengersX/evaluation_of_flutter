@@ -1,13 +1,9 @@
 package sogou.com.pureandroidimageviewer;
 
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ViewTreeObserver;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,18 +12,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
-import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,9 +39,11 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        List<String> imgList = new ArrayList<>();
+        List<RecyclerViewAdapter.SimpleModel> imgList = new ArrayList<>();
         for (int i = 1; i <= 31; i++) {
-            imgList.add("img_" + i);
+            imgList.add(new RecyclerViewAdapter.SimpleText("hello world : " + i));
+            imgList.add(new RecyclerViewAdapter.SimpleLocalUriText("img_" + i));
+
         }
         mRecyclerViewAdapter.addData(imgList);
 
@@ -84,36 +75,36 @@ public class MainActivity extends AppCompatActivity {
 //        fetchData();
     }
 
-    public void fetchData() {
-        if (mIsFetching) {
-            return;
-        }
-
-        mIsFetching = true;
-        mCurNum += 1;
-
-        mThreadPoolExecutor.submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    System.out.println("before performFetchDataSync");
-                    final List<String> urlList = performFetchDataSync(mOkHttpClient, mCurNum);
-                    mRecyclerView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mRecyclerViewAdapter.addData(urlList);
-                        }
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } finally {
-                    mIsFetching = false;
-                }
-            }
-        });
-    }
+//    public void fetchData() {
+//        if (mIsFetching) {
+//            return;
+//        }
+//
+//        mIsFetching = true;
+//        mCurNum += 1;
+//
+//        mThreadPoolExecutor.submit(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    System.out.println("before performFetchDataSync");
+//                    final List<String> urlList = performFetchDataSync(mOkHttpClient, mCurNum);
+//                    mRecyclerView.post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            mRecyclerViewAdapter.addData(urlList);
+//                        }
+//                    });
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                } finally {
+//                    mIsFetching = false;
+//                }
+//            }
+//        });
+//    }
 
     public List<String> performFetchDataSync(OkHttpClient okHttpClient, int curNum) throws IOException, JSONException {
 
