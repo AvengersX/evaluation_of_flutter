@@ -13,10 +13,18 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        _ivImageView = [[UIImageView alloc] initWithFrame:self.frame];
-        [_ivImageView setContentMode:UIViewContentModeScaleToFill];
+        CGRect textRect = self.frame;
+        
+        _ivTextView = [[UITextView alloc] initWithFrame:textRect];
+        [_ivTextView setTextColor:UIColor.blackColor];
+         [_ivTextView setFont:[UIFont fontWithName:@"Arial" size:40]];
+        
+        CGRect imageRect = self.frame;
+        _ivImageView = [[UIImageView alloc] initWithFrame:imageRect];
+        [_ivImageView setContentMode:UIViewContentModeScaleAspectFill];
         [_ivImageView setClipsToBounds:YES];
         [self.contentView addSubview:_ivImageView];
+        [self.contentView addSubview:_ivTextView];
     }
     
     return self;

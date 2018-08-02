@@ -34,7 +34,7 @@
     [_tableView setDataSource:self];
     [_tableView setDelegate:self];
     [self.view addSubview:_tableView];
-    _tableView.rowHeight = rect.size.height / 2;
+    _tableView.rowHeight = rect.size.height / 2 + rect.size.height / 5;
 }
 
 - (void)switchButtonClick:(UIButton *)sender
@@ -44,7 +44,7 @@
     
     if(_tableView == nil)
     {
-    
+        
     }
     else
         [_tableView setHidden:FALSE ];
@@ -59,26 +59,39 @@
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
     static NSString *cellID = @"cell";
+    NSInteger pos = [indexPath indexAtPosition:1];
+
     IVTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {
         cell = [[IVTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
     
-    NSInteger pos = [indexPath indexAtPosition:1];
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         NSString *name = [NSString stringWithFormat:@"p%li", pos + 1];
         UIImage *img = [UIImage imageNamed:name];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [cell.ivImageView setFrame:cell.bounds];
+            CGRect imageRect = cell.bounds;
+            imageRect.origin.y += cell.bounds.size.height* 2/7;
+            imageRect.size.height = imageRect.size.height* 5/7;
+            
+//                CGRect bound = cell.bounds;
+//                bound.size.height = cell.bounds.size.height *5/7;
+            [cell.ivImageView setFrame:imageRect];
             cell.ivImageView.image = img;
+            
+            CGRect textRect = cell.bounds;
+            textRect.size.height = textRect.size.height* 2/7;
+            
+            [cell.ivTextView setText:[NSString stringWithFormat:@"hello word %li", pos + 1]];
+            [cell.ivTextView setFrame:textRect];
             //[cell setNeedsLayout];
         });
     });
-    
-    
-    return cell;
+        
+        return cell;
+
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -131,7 +144,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return rect.size.height / 2;
+    return rect.size.height * 7 / 10;
 }
 
 @end

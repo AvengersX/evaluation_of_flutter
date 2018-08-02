@@ -11,5 +11,6 @@
 @interface IVTableViewCell : UITableViewCell
 
 @property (nonatomic, strong) UIImageView *ivImageView;
+@property (nonatomic, strong) UITextView *ivTextView;
 
 @end
