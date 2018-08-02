@@ -12,19 +12,19 @@ class FlutterDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
         title: 'Flutter Demo',
-        theme: ThemeData.light(),
+//        theme: ThemeData.light(),
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case page_home:
               return NonAnimationRoute(
-                builder: (_) => MainPage(),
-                settings: settings,
-              );
-            case page_image_list:
-              return NonAnimationRoute(
                 builder: (_) => ImageListWidget(),
                 settings: settings,
               );
+//            case page_image_list:
+//              return NonAnimationRoute(
+//                builder: (_) => ImageListWidget(),
+//                settings: settings,
+//              );
           }
           assert(false);
         });
