@@ -12,7 +12,7 @@ class FlutterDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
         title: 'Flutter Demo',
-        theme: ThemeData.light(),
+//        theme: ThemeData.light(),
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case page_home:
