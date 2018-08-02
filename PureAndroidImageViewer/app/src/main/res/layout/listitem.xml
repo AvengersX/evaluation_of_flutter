@@ -18,4 +18,10 @@
         android:layout_below="@id/divider"
         android:layout_alignParentBottom="true"
         />
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:gravity="center"
+        />
 </RelativeLayout>
