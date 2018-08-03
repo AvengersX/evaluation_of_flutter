@@ -13,16 +13,15 @@
 
 @implementation SWLayer {
     NSDictionary *fontAttributes;
-    struct timespec spec;
 }
 
 - (instancetype)initWithFontSize:(int)fontSize
 {
     self = [super init];
     if (self) {
-        UIFont *font = [UIFont fontWithName:@"Courier" size:fontSize];
+        UIFont *font = [UIFont fontWithName:[UIFont systemFontOfSize:10].fontName size:fontSize];
         NSMutableParagraphStyle* textStyle = NSMutableParagraphStyle.defaultParagraphStyle.mutableCopy;
-        textStyle.alignment = NSTextAlignmentCenter;
+        //textStyle.alignment = NSTextAlignmentCenter;
         fontAttributes = @{ NSFontAttributeName: font, NSForegroundColorAttributeName: UIColor.blackColor, NSParagraphStyleAttributeName: textStyle };
     }
     return self;
@@ -30,6 +29,7 @@
 
 - (void)drawInContext:(CGContextRef)ctx
 {
+    struct timespec spec;
     clock_gettime(CLOCK_REALTIME, &spec);
     int sec = spec.tv_sec % 60;
     int msec = spec.tv_nsec / 1.0e7;
