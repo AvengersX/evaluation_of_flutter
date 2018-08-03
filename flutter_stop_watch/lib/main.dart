@@ -49,14 +49,18 @@ class MyStopWatchState extends State<MyStopWatch> {
     _timer = Timer.periodic(Duration(milliseconds: 16), (timer) {
       setState(() {
         DateTime now = DateTime.now();
-        setText('${now.second}  ${now.millisecond ~/ 10}');
+        setText(
+            '${now.second.toString().padLeft(2, '0')} ${(now.millisecond ~/ 10).toString().padLeft(2, '0')}');
       });
     });
   }
 
   setText(String text) {
     _textPainter.text = TextSpan(
-      style: TextStyle(color: Colors.black, fontSize: 60.0),
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: 120.0,
+      ),
       text: text,
     );
   }
@@ -64,7 +68,7 @@ class MyStopWatchState extends State<MyStopWatch> {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      size: Size(175.0, 60.0),
+      size: Size(330.0, 120.0),
       painter: StopWatchPainter(_textPainter, _offset),
     );
   }
