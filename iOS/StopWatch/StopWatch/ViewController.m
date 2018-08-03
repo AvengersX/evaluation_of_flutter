@@ -28,7 +28,7 @@
     
     layerToDraw = [[SWLayer alloc] initWithFontSize:fontSize];
     layerToDraw.frame = labelRect;
-    layerToDraw.contentsScale = 1;
+    layerToDraw.contentsScale = 2;
 
     [self.view.layer addSublayer:layerToDraw];
     [layerToDraw setNeedsDisplay];

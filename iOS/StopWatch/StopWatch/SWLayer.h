@@ -6,7 +6,6 @@
 //  Copyright © 2018年 ZX. All rights reserved.
 //
 
-#import <QuartzCore/QuartzCore.h>
 #import <UIKit/UIKit.h>
 
 @interface SWLayer : CALayer
