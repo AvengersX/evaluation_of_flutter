@@ -25,6 +25,7 @@
     CGRect labelRect = self.view.bounds;
     labelRect.origin.y = (self.view.bounds.size.height - fontSize) / 2;
     labelRect.size.height = fontSize;
+    labelRect.origin.x = 30;
     
     layerToDraw = [[SWLayer alloc] initWithFontSize:fontSize];
     layerToDraw.frame = labelRect;
@@ -33,7 +34,7 @@
     [self.view.layer addSublayer:layerToDraw];
     [layerToDraw setNeedsDisplay];
     
-    [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(timeTick:) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:0.016 target:self selector:@selector(timeTick:) userInfo:nil repeats:YES];
 }
 
 - (void)timeTick:(NSTimer *)timer
