@@ -7,10 +7,13 @@
 //
 
 #import "SWLayer.h"
+#import <time.h>
+#import <stdio.h>
+#import <stdlib.h>
 
 @implementation SWLayer {
     NSDictionary *fontAttributes;
-    CGRect textRect;
+    struct timespec spec;
 }
 
 - (instancetype)initWithFontSize:(int)fontSize
@@ -27,12 +30,24 @@
 
 - (void)drawInContext:(CGContextRef)ctx
 {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"ss SS"];
-    NSDate *currentDate = [NSDate date];
+    clock_gettime(CLOCK_REALTIME, &spec);
+    int sec = spec.tv_sec % 60;
+    int msec = spec.tv_nsec / 1.0e7;
+    msec %= 100;
+    char str[6] = { 0 };
+    str[0] = '0' + (sec / 10);
+    str[1] = '0' + (sec % 10);
+    str[2] = ' ';
+    str[3] = '0' + (msec / 10);
+    str[4] = '0' + (msec % 10);
+    
+    
+    NSString *res = [NSString stringWithCString:str encoding:NSASCIIStringEncoding];
+    //NSString *res = [NSString stringWithFormat:@"%02i %02i", sec, msec];
     
     UIGraphicsPushContext(ctx);
-    [[formatter stringFromDate:currentDate] drawInRect:self.bounds withAttributes:fontAttributes];
+    //[res drawAtPoint:self.bounds.origin withAttributes:fontAttributes];
+    [res drawInRect:self.bounds withAttributes:fontAttributes];
     UIGraphicsPopContext();
 }
 
