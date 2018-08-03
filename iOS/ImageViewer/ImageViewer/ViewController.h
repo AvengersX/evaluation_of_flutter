@@ -11,7 +11,6 @@
 @interface ViewController : UIViewController
 
 
-@property (strong, nonatomic) UIButton *switchButton;
 
 @property (strong, nonatomic) UITableView *tableView;
 

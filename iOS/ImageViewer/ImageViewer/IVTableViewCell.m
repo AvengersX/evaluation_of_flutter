@@ -17,11 +17,13 @@
         
         _ivTextView = [[UITextView alloc] initWithFrame:textRect];
         [_ivTextView setTextColor:UIColor.blackColor];
+        [_ivTextView setEditable:NO];
+        [_ivTextView setSelectable:NO];
          [_ivTextView setFont:[UIFont fontWithName:@"Arial" size:40]];
         
         CGRect imageRect = self.frame;
         _ivImageView = [[UIImageView alloc] initWithFrame:imageRect];
-        [_ivImageView setContentMode:UIViewContentModeScaleAspectFill];
+        [_ivImageView setContentMode:UIViewContentModeScaleToFill];
         [_ivImageView setClipsToBounds:YES];
         [self.contentView addSubview:_ivImageView];
         [self.contentView addSubview:_ivTextView];
