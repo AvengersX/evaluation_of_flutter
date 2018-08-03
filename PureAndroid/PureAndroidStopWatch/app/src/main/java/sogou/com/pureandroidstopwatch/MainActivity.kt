@@ -6,9 +6,10 @@ import android.os.Handler
 import android.os.Message
 import java.lang.ref.WeakReference
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 const val MSG_WHAT_UPDATE_STOP_WATCH = 0
-const val INIT_TEXT_FOR_STOP_WATCH = "000 000"
+const val INIT_TEXT_FOR_STOP_WATCH = "00 00"
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity() {
                 if (startTime < 0) {
                     startTime = System.currentTimeMillis()
                 }
+
                 stopWatchHandler.postDelayed(object : Runnable {
                     override fun run() {
                         stopWatchHandler.removeCallbacks(this)
@@ -55,16 +57,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun updateStopWatch() {
-        val delta = System.currentTimeMillis() - startTime
-        val str = format(delta)
-        stopWatchTextView.text = str
+        var calendar = Calendar.getInstance(Locale.getDefault())
+        val seconds = calendar.get(Calendar.SECOND)
+        val ms = calendar.get(Calendar.MILLISECOND) / 10
+        val time = formatTime(seconds, ms)
+
+        stopWatchTextView.text = time
     }
 
     private fun format(time: Long): String {
         val seconds = time / 1000
         val millis = time - seconds * 1000
 
-        return "${String.format("%03d", seconds)} ${String.format("%03d", millis)}"
+        return formatTime(seconds.toInt(), millis.toInt())
+    }
+
+    private fun formatTime(seconds: Int, millis: Int): String {
+        return "${String.format("%02d", seconds)} ${String.format("%02d", millis)}"
     }
 
     class MainActivityHandler(mainActivity: MainActivity) : Handler() {
