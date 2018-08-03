@@ -13,15 +13,9 @@
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/divider"
         android:layout_alignParentBottom="true"
-        />
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:gravity="center"
         />
 </RelativeLayout>
