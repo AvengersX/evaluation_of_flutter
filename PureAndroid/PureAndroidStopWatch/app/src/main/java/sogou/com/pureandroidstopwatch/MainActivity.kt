@@ -8,13 +8,13 @@ import java.lang.ref.WeakReference
 import kotlinx.android.synthetic.main.activity_main.*
 
 const val MSG_WHAT_UPDATE_STOP_WATCH = 0
-const val INIT_TEXT_FOR_STOP_WATCH = "00 00"
+const val INIT_TEXT_FOR_STOP_WATCH = "000 000"
 
 class MainActivity : AppCompatActivity() {
 
     private var running = false
     lateinit var stopWatchHandler: MainActivityHandler
-    private var startTime: Long = 0
+    private var startTime: Long = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +30,9 @@ class MainActivity : AppCompatActivity() {
             if (running) {
                 stopWatchHandler.removeCallbacksAndMessages(null)
             } else {
-                startTime = System.currentTimeMillis()
+                if (startTime < 0) {
+                    startTime = System.currentTimeMillis()
+                }
                 stopWatchHandler.postDelayed(object : Runnable {
                     override fun run() {
                         stopWatchHandler.removeCallbacks(this)
@@ -48,19 +50,21 @@ class MainActivity : AppCompatActivity() {
     private fun reset() {
         stopWatchTextView.text = INIT_TEXT_FOR_STOP_WATCH
         running = false
-        startTime = 0
+        startTime = -1
         stopWatchHandler.removeCallbacksAndMessages(null)
     }
 
     fun updateStopWatch() {
         val delta = System.currentTimeMillis() - startTime
-        stopWatchTextView.text = format(delta)
+        val str = format(delta)
+        stopWatchTextView.text = str
     }
 
     private fun format(time: Long): String {
         val seconds = time / 1000
         val millis = time - seconds * 1000
-        return "$seconds $millis"
+
+        return "${String.format("%03d", seconds)} ${String.format("%03d", millis)}"
     }
 
     class MainActivityHandler(mainActivity: MainActivity) : Handler() {
@@ -69,7 +73,6 @@ class MainActivity : AppCompatActivity() {
         override fun handleMessage(msg: Message?) {
             if (msg?.what == MSG_WHAT_UPDATE_STOP_WATCH) {
                 weakMainActivity.get()?.updateStopWatch()
-                println("weakMainActivity = ${weakMainActivity}")
             }
 
         }
